@@ -22,7 +22,7 @@ class Command(BaseCommand):
         # Named (optional) arguments
         parser.add_argument(
               '--region',
-               nargs='?',
+            #    nargs='+',
                help='Select a specific Region from ' + str(REGIONS)
         )
     def download_file(self, url:str):
@@ -121,11 +121,10 @@ class Command(BaseCommand):
         regions = REGIONS # default: ingest all regions 
         if options['region']: # ingest one specific region
             if options.get('region') in REGIONS:
-                regions = options['region']
+                regions = [options['region']]
             else:
-                self.stdout.write(self.style.ERROR("Error: Invalid Region, choose one of " + str(region)))
+                self.stdout.write(self.style.ERROR("Error: Invalid Region, choose one of " + str(regions)))
                 raise SystemExit
-
         t = time.time()
         self.db_cleanup(regions)
         future_to_load = []
@@ -141,4 +140,5 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR('Exception: ' + str(exc)))
                 else:
                     self.stdout.write(self.style.SUCCESS(res_msg))
+            executor.shutdown(wait=True)
         print('time = ' + str(time.time() - t))
