@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -124,3 +128,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#Base url for ingesting data
+BASE_DATA_URL = env.str('BASE_DATA_URL', default = 'https://www.metoffice.gov.uk/pub/data/weather/uk/climate/datasets/{0}/date/{1}.txt')
+REGIONS = env.list('REGIONS', default = ['UK','England','Wales','Scotland','Northern_Ireland',
+        'England_and_Wales','England_N','England_S','Scotland_E','Scotland_N','Scotland_W','England_E_and_NE',
+        'England_NW_and_N_Wales','Midlands','East_Anglia','England_SW_and_S_Wales','England_SE_and_Central_S'
+        ])
+PARAMETERS = env.list('PARAMETERS', default = ['Tmax','Tmin','Tmean','Sunshine','Rainfall','Raindays1mm','AirFrost'])
+
+#Ingest file block size
+FILE_READ_CHUNK_SIZE = env.int('FILE_READ_CHUNK_SIZE', default = 8000)
+
+#Max thread workers
+MAX_WORKERS = env.int('MAX_WORKERS', default = 6)
