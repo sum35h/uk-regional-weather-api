@@ -142,3 +142,9 @@ FILE_READ_CHUNK_SIZE = env.int('FILE_READ_CHUNK_SIZE', default = 8000)
 
 #Max thread workers
 MAX_WORKERS = env.int('MAX_WORKERS', default = 6)
+
+PAGE_SIZE = env.int('PAGE_SIZE', default = 24)
+
+DATA_MONTH_FORMAT = env.str('DATA_MONTH_FORMAT', default = "%b")
+VALID_START_YEAR = env.int('VALID_START_YEAR', default = 1800)
+VALID_END_YEAR = env.int('VALID_END_YEAR', default = 2022)
